@@ -12,7 +12,7 @@ class Movie < ActiveRecord::Base
     end
 
     def self.find_in_tmdb(entry, key="7d00f31609a1879e2fda0da6b3a62b90")
-      if entry.is_a?(Hash)
+      if entry.is_a?(Hash)        
         uri = "https://api.themoviedb.org/3/search/movie?api_key=" + key
 
         entry.each { |k, v|
@@ -22,7 +22,10 @@ class Movie < ActiveRecord::Base
           if k == :title or k == "title"
             this_param = this_param + "query=" + edited_v
             uri = uri + this_param
-          elsif k == :release_year or k == "release_year" or k == :language or k == "language"
+          elsif k == :release_year or k == "release_year"
+            this_param = this_param + "year=" + edited_v
+            uri = uri + this_param
+          elsif k == :language or k == "language"
             this_param = this_param + k.to_s() + "=" + edited_v
             uri = uri + this_param
           end
@@ -33,7 +36,6 @@ class Movie < ActiveRecord::Base
 
         return_movies = []
         # cycle thru all of the return movies and append the hash in to the return_movies
-        # raise Exception.new all_movies
         all_movies.each { |movie|
           this_movie = {"title" => movie["title"], "rating" => "R", "release_date" => movie["release_date"].to_date, "description" => movie["overview"]}
 
