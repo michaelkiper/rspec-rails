@@ -3,11 +3,18 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 gem 'rails', '4.2.11'
 
+gem "webmock"
 
 gem 'sass-rails', '~> 5.0.3'
 gem 'uglifier', '>= 2.7.1'
 
 gem 'jquery-rails'
+
+gem 'faraday'  # in main group; simplifies calling TMDb
+group :test do
+  gem 'rails-controller-testing'
+  gem 'guard-rspec'                 # automates re-running tests
+end
 
 
 # for Heroku deployment - as described in Ap. A of ELLS book

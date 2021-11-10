@@ -3,11 +3,16 @@
 
 
 <h2>Search in TMDb</h2>
-<%# Part 5 here %>
+<% flash.each do |key, value| %>
+  <div class="alert alert-<%= key %> alert-dismissible fade show" role="alert">
+    <span class="mesage-value"><%= value %></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
 
 <div class="search-container">
 <%# Part 1 here %>
-<%= form_tag <%# fill in here #%> do %>
+<%= form_tag "search_tmdb", method: :post, id: "tmdb_form" do %>
     <label for="searchMovieName">Movie Name</label>
     <%= text_field_tag 'title', nil, class: "form-control", id: "movie_title_field", placeholder: "Manhunter", id: "movie_title_field"%> 
     <label for="searchReleaseDateField">Release Year</label>
@@ -23,6 +28,49 @@
     <label class="form-check-label" for="language_all">All Languages</label>
   </div>
   <%= submit_tag 'Search', id: 'tmdb_submit', class: 'btn btn-warning col-2' %>
+  <%# ADDED THIS PART %>
+  <%= link_to 'Back to movie list', movies_path, class: 'btn btn-primary col-2' %>
   
 <% end %>
 </div>
+
+<br>
+<br>
+<h2>Search Results</h2>
+<table class="table table-striped col-md-12" id="search_movies" type="hidden">
+  <thead>
+    <tr>
+      <th>Movie Title</th>
+      <th>Rating</th>
+      <th>Release Date</th>
+      <th>Synopsis</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @movies.each do |movie| %>
+      <tr>
+        <td>
+          <%= movie["title"] %>
+        </td>
+        <td>
+          <%= movie["rating"] %>
+        </td>
+        <td>
+          <%= movie["release_date"] %>
+        </td>
+        <td>
+          <%= movie["description"] %>
+        </td>
+        <td>
+        <%# LINK TO ADD IN MOVIE HERE %>
+          <%= form_tag "add_movie_path", method: :post, id: "add_movie_form" do %>
+            <%= hidden_field_tag 'movies', @movies %>
+            <%= link_to 'Add movie', add_movie_path(movie), method: :post %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

@@ -17,6 +17,24 @@ class MoviesController < ApplicationController
       session['sort_by'] = @sort_by
     end
     
+    def search_tmdb
+      @movies = []
+      if params["title"] == "" and params["title"] != nil
+        flash[:alert] = "Please fill in all the required fields!"
+      elsif params["title"] != "" and params["title"] != nil
+        @movies = Movie.find_in_tmdb(params)
+        if @movies == []
+          flash[:alert] = "No movies found with given parameters!"
+        end
+      end
+    end
+
+    def add_movie
+      movie = {"title" => params["title"], "release_date" => params["release_date"], "rating" => params["rating"], "description" => params["description"]}
+      Movie.create!(movie)
+      flash[:notice] = movie["title"] + " was successfully added to RottenPotatoes."
+      redirect_to search_tmdb_path
+    end
   
     def new
       # default: render 'new' template
