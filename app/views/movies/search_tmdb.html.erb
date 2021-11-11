@@ -64,9 +64,13 @@
         </td>
         <td>
         <%# LINK TO ADD IN MOVIE HERE %>
-          <%= form_tag "add_movie_path", method: :post, id: "add_movie_form" do %>
-            <%= hidden_field_tag 'movies', @movies %>
-            <%= link_to 'Add movie', add_movie_path(movie), method: :post %>
+          <%= link_to 'Add movie', add_movie_path(movie), method: :post %>
+          <%= form_tag "add_movie", method: :post, id: "add_movie_form" do %>
+            <%= hidden_field_tag "title", movie["title"] %>
+            <%= hidden_field_tag "rating", movie["rating"] %>
+            <%= hidden_field_tag "release_date", movie["release_date"] %>
+            <%= hidden_field_tag "description", movie["description"] %>
+          <%= submit_tag 'Add movie', id: "add_movie_submit" %>
           <% end %>
         </td>
       </tr>
