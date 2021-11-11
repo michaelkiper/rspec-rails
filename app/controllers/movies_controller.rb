@@ -32,7 +32,7 @@ class MoviesController < ApplicationController
     def add_movie
       movie = {"title" => params["title"], "release_date" => params["release_date"], "rating" => params["rating"], "description" => params["description"]}
       Movie.create!(movie)
-      flash[:notice] = movie["title"] + " was successfully added to RottenPotatoes."
+      flash[:alert] = movie["title"] + " was successfully added to RottenPotatoes."
       redirect_to search_tmdb_path
     end
   
